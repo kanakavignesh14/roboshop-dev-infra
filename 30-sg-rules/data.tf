@@ -1,0 +1,12 @@
+data "aws_ssm_parameter" "backend-ALB-sg_id"  {
+    name = "/${var.project_name}/${var.environment}/backend-ALB-sg_id"
+}
+
+data "aws_ssm_parameter" "bastion-sg_id"  {
+    name = "/${var.project_name}/${var.environment}/bastion-sg_id"
+}
+
+data "aws_ssm_parameter" "mongodb-sg_id" {
+    name = "/${var.project_name}/${var.environment}/mongodb-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}
