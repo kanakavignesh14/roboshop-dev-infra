@@ -4,7 +4,7 @@ resource "aws_instance" "bastion_ec2" {
   subnet_id = local.public_subnet_ids # we are creating bastion in public subnet
   vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]
   tags = {
-    Name = "roboshop"
+    Name = "bastion-host-ec2"
     Environment = "dev"
     ec2 = "bastion"
 
