@@ -49,7 +49,7 @@ resource "aws_instance" "redis_ec2" {
   ami           = local.ami_id
   instance_type = "t3.micro"
   subnet_id = local.database_subnet_ids # we are creating redis in database subnet reffering local.tf
-  vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]  # reffering data.tf for security_group_id
+  vpc_security_group_ids = [data.aws_ssm_parameter.redis-sg_id.value]  # reffering data.tf for security_group_id
   tags = {
     Name = "redis-ec2"
     Environment = "dev"
