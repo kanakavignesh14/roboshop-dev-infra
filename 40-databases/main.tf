@@ -36,7 +36,7 @@ resource "terraform_data" "mongodb" {
     inline = [
         "chmod +x /tmp/bootstrap.sh",
         #"sudo sh /tmp/bootstrap.sh",
-        "sudo sh /tmp/bootstrap.sh mongodb"
+        "sudo sh /tmp/bootstrap.sh mongodb dev"
     ]
   }
 
@@ -82,7 +82,7 @@ resource "terraform_data" "redis" {
   provisioner "remote-exec" {
     inline = [
         "chmod +x /tmp/bootstrap.sh",
-        "sudo sh /tmp/bootstrap.sh redis"
+        "sudo sh /tmp/bootstrap.sh redis dev"
     ]
   }
 
@@ -128,10 +128,64 @@ resource "terraform_data" "rabbitmq" {
   provisioner "remote-exec" {
     inline = [
         "chmod +x /tmp/bootstrap.sh",
-        "sudo sh /tmp/bootstrap.sh rabbitmq"
+        "sudo sh /tmp/bootstrap.sh rabbitmq dev"
     ]
   }
 
 
 
 }
+
+resource "aws_instance" "mysql_ec2" {
+  ami           = local.ami_id
+  instance_type = "t3.micro"
+  subnet_id = local.database_subnet_ids # we are creating redis in database subnet reffering local.tf
+  vpc_security_group_ids = [data.aws_ssm_parameter.mysql-sg_id.value]  # reffering data.tf for security_group_id
+  tags = {
+    Name = "mysql-ec2"
+    Environment = "dev"
+    ec2 = "mysql_ec2"
+
+
+  }
+}
+resource "aws_iam_instance_profile" "mysql" {
+  name = "mysql"
+  role = "EC2SSMParameterRead14"
+}
+
+# when redis instace created with id means  it will trigger when instance id created
+resource "terraform_data" "mysql" { 
+  triggers_replace = [
+    aws_instance.mysql_ec2.id
+  ]
+  
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    password = "DevOps321"
+    host     = aws_instance.mysql_ec2.private_ip
+  }
+
+  # terraform copies this file to rabbitmq_ec2 server
+  provisioner "file" {
+    source = "bootstrap.sh"
+    destination = "/tmp/bootstrap.sh"
+  }
+  
+  #giving execute permission to tht bootstrap file
+  provisioner "remote-exec" {
+    inline = [
+        "chmod +x /tmp/bootstrap.sh",
+        "sudo sh /tmp/bootstrap.sh mysql dev"
+    ]
+  }
+
+
+
+}
+
+#for mysql instance
+#terraform passing dev as args to shell
+#shell recieved into varible $2 (environment=$2)
+#shell passing to ansible which want environment in ansible-role main.yaml from there it will seek ssm parameter values for mysql server
