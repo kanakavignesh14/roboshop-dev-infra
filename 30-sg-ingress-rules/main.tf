@@ -58,3 +58,12 @@ resource "aws_security_group_rule" "bastion-rabbitmq" { # rabbitmq accepting ssh
    protocol          = "tcp"
    to_port           = 22
 }
+
+resource "aws_security_group_rule" "bastion-mysql" { # mysql accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.mysql-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
