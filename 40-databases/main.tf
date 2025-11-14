@@ -151,7 +151,7 @@ resource "aws_instance" "mysql_ec2" {
 }
 resource "aws_iam_instance_profile" "mysql" {
   name = "mysql"
-  role = "EC2SSMParameterRead14"
+  role = "EC2SSMParameterRead"
 }
 
 # when redis instace created with id means  it will trigger when instance id created
@@ -189,3 +189,41 @@ resource "terraform_data" "mysql" {
 #terraform passing dev as args to shell
 #shell recieved into varible $2 (environment=$2)
 #shell passing to ansible which want environment in ansible-role main.yaml from there it will seek ssm parameter values for mysql server
+
+
+resource "aws_route53_record" "mongodb" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "mongodb-${var.environment}.${var.domain_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.mongodb_ec2.private_ip]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "redis" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "redis-${var.environment}.${var.domain_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.redis_ec2.private_ip]
+  allow_overwrite = true
+}
+
+resource "aws_route53_record" "mysql" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "mysql-${var.environment}.${var.domain_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.mysql_ec2.private_ip]
+  allow_overwrite = true
+}
+
+
+resource "aws_route53_record" "rabbitmq" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = "rabbitmq-${var.environment}.${var.domain_name}"
+  type    = "A"
+  ttl     = 1
+  records = [aws_instance.rabbitmq_ec2.private_ip]
+  allow_overwrite = true
+}

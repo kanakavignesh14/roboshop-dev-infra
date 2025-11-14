@@ -4,7 +4,7 @@ resource "aws_ssm_parameter" "sg_id" {
     type = "String"
     value = module.sg[count.index].sg_id
             
-            #module.sg[0].sg_id
+            #module.sg[0].sg_id we are storing sg_id in ssm parameter
 }
 #sg_id = [
  # "sg-05da62382f28d0941",
