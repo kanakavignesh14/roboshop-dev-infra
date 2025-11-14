@@ -25,3 +25,8 @@ data "aws_ssm_parameter" "mysql-sg_id" {
     name = "/${var.project_name}/${var.environment}/mysql-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
 
 }
+
+data "aws_ssm_parameter" "catalogue-sg_id" {
+    name = "/${var.project_name}/${var.environment}/catalogue-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}

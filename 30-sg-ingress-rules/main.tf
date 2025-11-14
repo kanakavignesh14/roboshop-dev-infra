@@ -67,3 +67,21 @@ resource "aws_security_group_rule" "bastion-mysql" { # mysql accepting ssh conne
    protocol          = "tcp"
    to_port           = 22
 }
+
+resource "aws_security_group_rule" "bastion-catalogue" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.catalogue-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+
+resource "aws_security_group_rule" "catalogue-mongodb" { # mongodb accepting ssh connection from catalogue host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.mongodb-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.catalogue-sg_id.value    # catalogue connects to mongodb (need bastion sg id)
+   from_port         = 27017
+   protocol          = "tcp"
+   to_port           = 27017
+}
