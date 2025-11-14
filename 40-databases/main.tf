@@ -192,7 +192,7 @@ resource "terraform_data" "mysql" {
 
 
 resource "aws_route53_record" "mongodb" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = var.zone_id
   name    = "mongodb-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
@@ -201,7 +201,7 @@ resource "aws_route53_record" "mongodb" {
 }
 
 resource "aws_route53_record" "redis" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = var.zone_id
   name    = "redis-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
@@ -210,7 +210,7 @@ resource "aws_route53_record" "redis" {
 }
 
 resource "aws_route53_record" "mysql" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = var.zone_id
   name    = "mysql-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
@@ -220,7 +220,7 @@ resource "aws_route53_record" "mysql" {
 
 
 resource "aws_route53_record" "rabbitmq" {
-  zone_id = aws_route53_zone.primary.zone_id
+  zone_id = var.zone_id
   name    = "rabbitmq-${var.environment}.${var.domain_name}"
   type    = "A"
   ttl     = 1
