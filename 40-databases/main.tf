@@ -151,7 +151,7 @@ resource "aws_instance" "mysql_ec2" {
 }
 resource "aws_iam_instance_profile" "mysql" {
   name = "mysql"
-  role = "EC2SSMParameterRead14"
+  role = "EC2SSMParameterStoreRead14"
 }
 
 # when redis instace created with id means  it will trigger when instance id created
