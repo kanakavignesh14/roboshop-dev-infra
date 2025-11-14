@@ -141,6 +141,7 @@ resource "aws_instance" "mysql_ec2" {
   instance_type = "t3.micro"
   subnet_id = local.database_subnet_ids # we are creating redis in database subnet reffering local.tf
   vpc_security_group_ids = [data.aws_ssm_parameter.mysql-sg_id.value]  # reffering data.tf for security_group_id
+  iam_instance_profile = aws_iam_instance_profile.mysql.name
   tags = {
     Name = "mysql-ec2"
     Environment = "dev"
@@ -149,6 +150,10 @@ resource "aws_instance" "mysql_ec2" {
 
   }
 }
+#attaches an existing IAM role to an instance profile.
+#You must put the role inside an instance profile, and then attach that instance profile to the EC2 instance.
+#IAM Role  ➝  Instance Profile  ➝  EC2 Instance
+
 resource "aws_iam_instance_profile" "mysql" {
   name = "mysql"
   role = "EC2SSMParameterStoreRead14"
