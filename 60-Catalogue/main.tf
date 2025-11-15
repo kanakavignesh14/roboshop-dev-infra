@@ -215,3 +215,21 @@ resource "aws_lb_target_group" "catalogue_target_group" {
 #healthy_threshold = 2 → Needs 2 successful checks to be marked healthy
 
 #unhealthy_threshold = 2 → 2 failures → marked unhealthy
+
+
+#finally attaching listner to load balancer so tht it will route traffic to catalogue TG
+resource "aws_lb_listener_rule" "catalogue" {
+  listener_arn = data.aws_ssm_parameter.backend_alb_listener-arn.value
+  priority     = 10
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.catalogue_target_group.arn
+  }
+
+  condition {
+    host_header {
+      values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
+    }
+  }
+}
