@@ -155,9 +155,6 @@ resource "aws_autoscaling_group" "catalogue" {
 
 #Suppose our ASG currently has 3 EC2s.
 #Their CPU usages:
-EC2-1 → 60%
-#EC2-2 → 80%
-#EC2-3 → 85%
 
 #ASG calculates:
 #Average CPU = (60 + 80 + 85) / 3
