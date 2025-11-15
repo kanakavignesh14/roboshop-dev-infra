@@ -131,8 +131,9 @@ resource "aws_autoscaling_group" "catalogue" {
   vpc_zone_identifier       = local.private_subnet_ids
 
   #After creating send to Target group
-
-  target_group_arns = [aws_lb_target_group.catalogue_target_group_arn] #ASG need to send ec2's to this target group where it have list of ec2's
+#👉 “Attach this Auto Scaling Group to this Target Group.”
+#arn -> amazon resource name
+  target_group_arns = [aws_lb_target_group.catalogue_target_group.arn] #ASG need to send ec2's to this target group where it have list of ec2's
 
   instance_refresh {
     strategy = "Rolling"
