@@ -123,7 +123,7 @@ resource "aws_autoscaling_group" "catalogue" {
   force_delete              = false
   #giving here launch template details to ASG
   launch_template {
-    id      = aws_launch_template.catalogue.launch_template.id
+    id      = aws_launch_template.catalogue_launch_template.id
     version = aws_launch_template.catalogue_launch_template.latest_version
   }
   #giving here details abiut which zone and subnet these ec2 need to create
@@ -132,7 +132,7 @@ resource "aws_autoscaling_group" "catalogue" {
 
   #After creating send to Target group
 
-  target_group_arns = [aws_lb_target_group.catalogue.target_group_arn] #ASG need to send ec2's to this target group where it have list of ec2's
+  target_group_arns = [aws_lb_target_group.catalogue_target_group_arn] #ASG need to send ec2's to this target group where it have list of ec2's
 
   instance_refresh {
     strategy = "Rolling"
