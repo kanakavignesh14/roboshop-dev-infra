@@ -186,7 +186,7 @@ resource "aws_autoscaling_policy" "catalogue" {
 
 # Target group will have list all ec2's and appectping HTTP traffic at port 8080
 resource "aws_lb_target_group" "catalogue_target_group" {
-  name     = "${local.common_name_suffix}-catalogue_TG"
+  name     = "${local.common_name_suffix}_cataTG"
   port     = 8080 # accept 
   protocol = "HTTP"
   vpc_id   = data.aws_ssm_parameter.vpc_id.value
