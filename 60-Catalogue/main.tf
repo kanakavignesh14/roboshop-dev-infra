@@ -73,7 +73,7 @@ resource "aws_launch_template" "catalogue_launch_template" {
   instance_initiated_shutdown_behavior = "terminate"
   instance_type = "t3.micro"
 
-  vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]
+  vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value] # it takes list, but we gave one [<sg_id>]
 
   # when we run terraform apply again, a new version will be created with new AMI ID
   update_default_version = true
@@ -126,8 +126,9 @@ resource "aws_autoscaling_group" "catalogue" {
     id      = aws_launch_template.catalogue_launch_template.id
     version = aws_launch_template.catalogue_launch_template.latest_version
   }
-  #giving here details abiut which zone and subnet these ec2 need to create
+  #giving here details about which zone and subnet these ec2 need to create
 
+#vpc_zone_identifier = local.private_subnet_ids always expects a LIST, not a string.
   vpc_zone_identifier       = local.private_subnet_ids
 
   #After creating send to Target group
