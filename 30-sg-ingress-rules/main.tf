@@ -77,6 +77,51 @@ resource "aws_security_group_rule" "bastion-catalogue" { # catalogue accepting s
    to_port           = 22
 }
 
+resource "aws_security_group_rule" "bastion-cart" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.cart-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+
+resource "aws_security_group_rule" "bastion-user" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.user-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+
+resource "aws_security_group_rule" "bastion-shipping" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.shipping-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+resource "aws_security_group_rule" "bastion-payment" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.payment-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+
+resource "aws_security_group_rule" "bastion-frontend" { # catalogue accepting ssh connection from bastion host
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.frontend-sg_id.value     #mongodg is accept (need mongodb sg id)
+   source_security_group_id =   data.aws_ssm_parameter.bastion-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
+
+
 resource "aws_security_group_rule" "catalogue-mongodb" { # mongodb accepting ssh connection from catalogue host
    type              = "ingress"
    security_group_id = data.aws_ssm_parameter.mongodb-sg_id.value     #mongodg is accept (need mongodb sg id)
