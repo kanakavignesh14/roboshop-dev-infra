@@ -76,7 +76,12 @@ resource "aws_launch_template" "catalogue_launch_template" {
   vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value] # it takes list, but we gave one [<sg_id>]
 
   # when we run terraform apply again, a new version will be created with new AMI ID
-  update_default_version = true
+  #when there is configuration change and hit terraform apply then ami will change at tht time we need to maintain versions
+  #When you change AMI in Terraform:
+  #Terraform creates launch template version 2
+  #And automatically makes version 2 the default.   VERY IMPORTYANT BELOW LINE
+  
+  update_default_version = true  #And automatically makes version 2 as the default, because ASG need to use latesest chanhges to create ec2. VERY IMPORTANT
 
   # tags attached to the instance
   tag_specifications {
@@ -128,14 +133,17 @@ resource "aws_autoscaling_group" "catalogue" {
   }
   #giving here details about which zone and subnet these ec2 need to create
 
-#vpc_zone_identifier = local.private_subnet_ids always expects a LIST, not a string.
+  #vpc_zone_identifier = local.private_subnet_ids always expects a LIST, not a string.
   vpc_zone_identifier       = local.private_subnet_ids
 
   #After creating send to Target group
-#👉 “Attach this Auto Scaling Group to this Target Group.”
-#arn -> amazon resource name
+  #👉 “Attach this Auto Scaling Group to this Target Group.”
+  #arn -> amazon resource name
   target_group_arns = [aws_lb_target_group.catalogue_target_group.arn] #ASG need to send ec2's to this target group where it have list of ec2's
 
+
+
+  # we are going to refresh launch template whenever there is change in new AMI configuration. through rolling update strategy
   instance_refresh {
     strategy = "Rolling"
     preferences {
@@ -218,6 +226,7 @@ resource "aws_lb_target_group" "catalogue_target_group" {
 
 
 #finally attaching listner to load balancer so tht it will route traffic to catalogue TG
+
 resource "aws_lb_listener_rule" "catalogue" {
   listener_arn = data.aws_ssm_parameter.backend_alb_listener-arn.value   
   priority     = 10
@@ -232,4 +241,23 @@ resource "aws_lb_listener_rule" "catalogue" {
       values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
     }
   }
-}
+}    # if any req comes to catalogue.backend-alb-dev.vigi-devops.fun. --> forward to catalogue Target group
+
+
+#🔥 1️⃣ Listener basics
+
+#Each ALB (Application Load Balancer) must have at least one listener.
+
+#Listener listens on a port, usually:
+
+#80 → HTTP
+
+#A listener has one default rule:
+
+#If no other rule matches, traffic goes to the default target group.
+
+#🔥 2️⃣ Adding your own rules
+
+#You don’t change the listener itself; you attach listener rules to it.
+
+#Listener rules define conditions and actions.
