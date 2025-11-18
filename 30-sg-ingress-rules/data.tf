@@ -30,3 +30,38 @@ data "aws_ssm_parameter" "catalogue-sg_id" {
     name = "/${var.project_name}/${var.environment}/catalogue-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
 
 }
+
+data "aws_ssm_parameter" "user-sg_id" {
+    name = "/${var.project_name}/${var.environment}/user-sg_id" 
+
+}
+
+data "aws_ssm_parameter" "cart-sg_id" {
+    name = "/${var.project_name}/${var.environment}/cart-sg_id" 
+
+}
+
+data "aws_ssm_parameter" "shipping-sg_id" {
+    name = "/${var.project_name}/${var.environment}/shipping-sg_id" 
+
+}
+
+data "aws_ssm_parameter" "payment-sg_id" {
+    name = "/${var.project_name}/${var.environment}/payment-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}
+
+data "aws_ssm_parameter" "frontend-sg_id" {
+    name = "/${var.project_name}/${var.environment}/frontend-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}
+
+data "aws_ssm_parameter" "backend_alb-sg_id" {
+    name = "/${var.project_name}/${var.environment}/backend-ALB-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}
+
+data "aws_ssm_parameter" "frontend-lb-sg_id" {
+    name = "/${var.project_name}/${var.environment}/frontend-lb-sg_id" # we are getting security_group_id for mongodb which we created using sg module and stored it ssm parameter, now here we fetching using data sources
+
+}
