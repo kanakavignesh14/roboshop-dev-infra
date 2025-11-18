@@ -5,5 +5,6 @@ variable "component_name" {
 
 
 variable "rule_priority" {
+    
     default = 10
 }
