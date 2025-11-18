@@ -150,6 +150,7 @@ resource "aws_instance" "mysql_ec2" {
 
   }
 }
+# we created here aws_ssm_parameter policy and attached to role to get username and password
 #attaches an existing IAM role to an instance profile.
 #You must put the role inside an instance profile, and then attach that instance profile to the EC2 instance.
 #IAM Role  ➝  Instance Profile  ➝  EC2 Instance
@@ -159,7 +160,7 @@ resource "aws_iam_instance_profile" "mysql" {
   role = "EC2SSMParameterStoreRead14"
 }
 
-# when redis instace created with id means  it will trigger when instance id created
+# when mysql instace created with id means  it will trigger when instance id created
 resource "terraform_data" "mysql" { 
   triggers_replace = [
     aws_instance.mysql_ec2.id

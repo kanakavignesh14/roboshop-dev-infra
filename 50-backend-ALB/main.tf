@@ -16,7 +16,7 @@ resource "aws_lb" "backend_alb" {
   )
 }
 
-# Backend ALB listening on port number 80
+# Backend ALB listening on port number 80       "default listener" we give catatlogue listener (realated traffic roututing) in catalogue 
 resource "aws_lb_listener" "backend_alb" {
   load_balancer_arn = aws_lb.backend_alb.arn
   port              = "80"
@@ -30,6 +30,19 @@ resource "aws_lb_listener" "backend_alb" {
       message_body = "Hi, I am from backend ALB HTTP"
       status_code  = "200"
     }
+  }
+}
+
+resource "aws_route53_record" "backend_alb" {
+  zone_id = var.zone_id
+  name    = "*.backend-alb-${var.environment}.${var.domain_name}"  #    *.backend-alb.vigi-devops.fun. --> backend LOad balancer
+  type    = "A"
+
+  alias {
+    # These are ALB details, not our domain details
+    name                   = aws_lb.backend_alb.dns_name
+    zone_id                = aws_lb.backend_alb.zone_id
+    evaluate_target_health = true
   }
 }
 
