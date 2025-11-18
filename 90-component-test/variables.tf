@@ -1,6 +1,4 @@
-variable "component_name" {
-    default = "catalogue"
-}
+
 
 
 
