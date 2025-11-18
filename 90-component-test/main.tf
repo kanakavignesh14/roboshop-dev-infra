@@ -12,6 +12,7 @@
 module "components" {
     for_each = var.components
     source = "git::https://github.com/kanakavignesh14/terraform-roboshop-componet.git?ref=main"
-    component = each.key
+    component_name = each.key
+    ami_id = data.aws_ami.joindevops.id
     rule_priority = each.value.rule_priority
 }
