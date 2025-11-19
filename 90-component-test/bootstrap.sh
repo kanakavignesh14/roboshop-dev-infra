@@ -15,6 +15,11 @@ cd $REPO_DIR
 mkdir -p /var/log/roboshop/
 touch ansible.log
 
+if ["$component" == "payment"]; then
+    #echo "Installing Openssl packages for component :$component"
+    dnf update openssl openssl-libs openssh openssh-server openssh-clients -y
+    
+fi 
 #chnge to ansible folder
 cd $REPO_DIR
 
@@ -28,10 +33,5 @@ else
     git clone $REPO_URL
     cd $ANSIBLE_DIR
 fi
-if ["$component" == "payment"]; then
-    echo "Installing Openssl packages for component :$component"
-    dnf update openssl openssl-libs openssh openssh-clients -y
-    #dnf install -y openssl openssl-libs
-fi  
 
 ansible-playbook -e component=$component -e env=$environment main.yaml

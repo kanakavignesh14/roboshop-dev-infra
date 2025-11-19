@@ -5,7 +5,8 @@ resource "aws_instance" "bastion_ec2" {
 
   vpc_security_group_ids = [data.aws_ssm_parameter.sg_id.value]
   iam_instance_profile = aws_iam_instance_profile.bastion_role.name # connecting iam role to ec2
-
+  
+# to increase disk size
   root_block_device {
         volume_size = 50
         volume_type = "gp3" # or "gp2", depending on your preference
