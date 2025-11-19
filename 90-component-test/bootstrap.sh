@@ -9,13 +9,13 @@ ANSIBLE_DIR=ansible-roboshop-roles.tf
 
 #setting up ansible folder where we going to clone ansible-roles folder to cofigure server
 mkdir -p $REPO_DIR
-cd $REPO_DIR
+#cd $REPO_DIR
 
 #setting up logs files
 mkdir -p /var/log/roboshop/
-touch ansible.log
+touch /var/log/roboshop/ansible.log
 
-if ["$component" == "payment"]; then
+if [ "$component" == "payment" ]; then
     #echo "Installing Openssl packages for component :$component"
     dnf update openssl openssl-libs openssh openssh-server openssh-clients -y
     
