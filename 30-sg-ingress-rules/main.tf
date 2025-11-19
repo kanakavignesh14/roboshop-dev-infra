@@ -227,43 +227,76 @@ resource "aws_security_group_rule" "backend_alb-payment" {
 }
 
 # connections between backend services
+# here two backend services cant connet direclty they need to connect through backend load balancer
+#resource "aws_security_group_rule" "cart-catalogue" { 
+  # type              = "ingress"
+  # security_group_id = data.aws_ssm_parameter.catalogue-sg_id.value     #catalogue is accept 
+  # source_security_group_id = data.aws_ssm_parameter.cart-sg_id.value    # cart connects to catalogue 
+  # from_port         = 8080
+  # protocol          = "tcp"
+ #  to_port           = 8080
+#}
 
-resource "aws_security_group_rule" "cart-catalogue" { 
+
+resource "aws_security_group_rule" "cart-backend_alb" { 
    type              = "ingress"
-   security_group_id = data.aws_ssm_parameter.catalogue-sg_id.value     #catalogue is accept 
-   source_security_group_id =   data.aws_ssm_parameter.cart-sg_id.value    # cart connects to catalogue 
-   from_port         = 8080
+   security_group_id = data.aws_ssm_parameter.backend-ALB-sg_id.value     #backend_alb is accept 
+   source_security_group_id = data.aws_ssm_parameter.cart-sg_id.value    # cart connects to catalogue 
+   from_port         = 80
    protocol          = "tcp"
-   to_port           = 8080
+   to_port           = 80
 }
 
 
-resource "aws_security_group_rule" "shipping-cart" { 
+# we changes here shipping and cart cant talk like th they need load balncer
+#resource "aws_security_group_rule" "shipping-cart" { 
+  # type              = "ingress"
+  # security_group_id = data.aws_ssm_parameter.cart-sg_id.value     #catalogue is accept 
+  # source_security_group_id =   data.aws_ssm_parameter.shipping-sg_id.value    # cart connects to catalogue 
+  # from_port         = 8080
+  # protocol          = "tcp"
+ #  to_port           = 8080
+#}
+
+resource "aws_security_group_rule" "shipping-backend_alb" { 
    type              = "ingress"
-   security_group_id = data.aws_ssm_parameter.cart-sg_id.value     #catalogue is accept 
-   source_security_group_id =   data.aws_ssm_parameter.shipping-sg_id.value    # cart connects to catalogue 
-   from_port         = 8080
+   security_group_id = data.aws_ssm_parameter.backend-ALB-sg_id.value     #catalogue is accept 
+   source_security_group_id = data.aws_ssm_parameter.shipping-sg_id.value    # cart connects to catalogue 
+   from_port         = 80
    protocol          = "tcp"
-   to_port           = 8080
+   to_port           = 80
 }
 
-resource "aws_security_group_rule" "payment-user" { 
+
+#resource "aws_security_group_rule" "payment-user" { 
+ #  type              = "ingress"
+  # security_group_id = data.aws_ssm_parameter.user-sg_id.value     
+   #source_security_group_id =   data.aws_ssm_parameter.payment-sg_id.value    
+   #from_port         = 8080
+  # protocol          = "tcp"
+   #to_port           = 8080
+#}
+
+resource "aws_security_group_rule" "payment-backend_alb" { 
    type              = "ingress"
-   security_group_id = data.aws_ssm_parameter.user-sg_id.value     
+   security_group_id = data.aws_ssm_parameter.backend-ALB-sg_id.value     
    source_security_group_id =   data.aws_ssm_parameter.payment-sg_id.value    
-   from_port         = 8080
+   from_port         = 80
    protocol          = "tcp"
-   to_port           = 8080
+   to_port           = 80
 }
 
-resource "aws_security_group_rule" "payment-cart" { 
-   type              = "ingress"
-   security_group_id = data.aws_ssm_parameter.cart-sg_id.value     
-   source_security_group_id =   data.aws_ssm_parameter.payment-sg_id.value    
-   from_port         = 8080
-   protocol          = "tcp"
-   to_port           = 8080
-}
+#resource "aws_security_group_rule" "payment-cart" { 
+ #  type              = "ingress"
+  # security_group_id = data.aws_ssm_parameter.cart-sg_id.value     
+ # source_security_group_id =   data.aws_ssm_parameter.payment-sg_id.value    
+  # from_port         = 8080
+  # protocol          = "tcp"
+  # to_port           = 8080
+#}
+
+
+
 
 
 # backend_alb should traffic from frontend

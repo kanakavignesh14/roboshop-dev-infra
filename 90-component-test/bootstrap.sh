@@ -1,11 +1,12 @@
 #!/bin/bash
 component=$1
 environment=$2
+#install ansible
 dnf install ansible -y
 
 REPO_URL=https://github.com/kanakavignesh14/ansible-roboshop-roles.tf.git
 REPO_DIR=/opt/roboshop/ansible
-ANSIBLE_DIR=ansible-roboshop-roles.tf
+ANSIBLE_DIR=ansible-roboshop-roles.tf  # if cloned before mens we will have like this
 
 #setting up ansible folder where we going to clone ansible-roles folder to cofigure server
 mkdir -p $REPO_DIR
@@ -30,7 +31,7 @@ if [ -d $ANSIBLE_DIR ]; then # if ok, cloned before, jus neefd to pull
     cd $ANSIBLE_DIR
     git pull
 else
-    git clone $REPO_URL
+    git clone $REPO_URL # we are clong using url
     cd $ANSIBLE_DIR
 fi
 
