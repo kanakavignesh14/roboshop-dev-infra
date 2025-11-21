@@ -330,3 +330,14 @@ resource "aws_security_group_rule" "frontens-alb-laptop" {
    protocol          = "tcp"
    to_port           = 443
 }
+
+#openvpn
+
+resource "aws_security_group_rule" "public-openvpn" {
+   type              = "ingress"
+   security_group_id = data.aws_ssm_parameter.openvpn-sg_id.value
+   cidr_blocks = ["0.0.0.0/0"] #from internet
+   from_port         = 22
+   protocol          = "tcp"
+   to_port           = 22
+}
