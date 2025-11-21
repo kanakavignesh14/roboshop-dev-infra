@@ -197,14 +197,14 @@ resource "aws_security_group_rule" "backend_alb-payment" {
    to_port           = 8080
 }
 
-resource "aws_security_group_rule" "payment-shipping" { # catalogue accepting ssh connection from bastion host
-   type              = "ingress"
-   security_group_id = data.aws_ssm_parameter.payment-sg_id.value     #mongodg is accept (need mongodb sg id)
-   source_security_group_id =   data.aws_ssm_parameter.shipping-sg_id.value    # bastion connects to mongodb (need bastion sg id)
-   from_port         = 8080
-   protocol          = "tcp"
-   to_port           = 8080
-}
+#resource "aws_security_group_rule" "payment-shipping" { # catalogue accepting ssh connection from bastion host
+#   type              = "ingress"
+ #  security_group_id = data.aws_ssm_parameter.payment-sg_id.value     #mongodg is accept (need mongodb sg id)
+  # source_security_group_id =   data.aws_ssm_parameter.shipping-sg_id.value    # bastion connects to mongodb (need bastion sg id)
+  # from_port         = 8080
+  # protocol          = "tcp"
+  # to_port           = 8080
+#}
                      # backend-alb
 resource "aws_security_group_rule" "bastion-backend_alb" { # rabbitmq accepting ssh connection from bastion host
    type              = "ingress"
